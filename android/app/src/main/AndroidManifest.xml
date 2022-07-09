@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.google_maps">
+    package="com.mohamed.maps">
    <application
         android:label="google_maps"
         android:name="${applicationName}"

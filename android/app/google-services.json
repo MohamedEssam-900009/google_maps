@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "995840492478",
+    "project_id": "maps-97c6a",
+    "storage_bucket": "maps-97c6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995840492478:android:d3c35eb952216f6a44afef",
+        "android_client_info": {
+          "package_name": "com.mohamed.maps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995840492478-v48qcucrffv8uckefru4jqgifse7pd9m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mohamed.maps",
+            "certificate_hash": "22767f23999f9a370ac17026f3830b708b0ad004"
+          }
+        },
+        {
+          "client_id": "995840492478-l4s43aqnceo48t7q819qb64r934r51hn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOoYzEFjc9oVazv152qXE3SahYTeI0Rrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "995840492478-l4s43aqnceo48t7q819qb64r934r51hn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "995840492478-iiagaat76rpd2gt45b40eoefmesvres6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mohamed.maps"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
