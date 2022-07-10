@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps/constants/my_colors.dart';
+import 'package:google_maps/constants/strings.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   late String phoneNumber;
+final GlobalKey<FormState> _phoneFormKey = GlobalKey<FormState>();
+
   Widget _buildIntroTexts() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
           'What is your phone number?',
@@ -113,11 +117,13 @@ class LoginScreen extends StatelessWidget {
     return flag;
   }
 
-  Widget _buildNextButton() {
+  Widget _buildNextButton(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, otpScreen);
+        },
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(110, 50),
           primary: Colors.black,
@@ -138,21 +144,24 @@ class LoginScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Form(
-          child: Container(
-            margin:
-                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 88.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildIntroTexts(),
-                const SizedBox(
-                  height: 110.0,
-                ),
-                _buildPhoneFormField(),
-                const SizedBox(height: 70.0,),
-                _buildNextButton(),
-              ],
+        body: SingleChildScrollView(
+          child: Form(
+            key: _phoneFormKey,
+            child: Container(
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 88.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildIntroTexts(),
+                  const SizedBox(
+                    height: 110.0,
+                  ),
+                  _buildPhoneFormField(),
+                  const SizedBox(height: 70.0,),
+                  _buildNextButton(context),
+                ],
+              ),
             ),
           ),
         ),
