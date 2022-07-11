@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps/constants/my_colors.dart';
-import 'package:google_maps/constants/strings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../business_logic/cubit/phone_auth/phone_auth_cubit.dart';
+import '../../constants/my_colors.dart';
+import '../../constants/strings.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   late String phoneNumber;
-final GlobalKey<FormState> _phoneFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _phoneFormKey = GlobalKey<FormState>();
 
   Widget _buildIntroTexts() {
     return Column(
@@ -117,12 +120,23 @@ final GlobalKey<FormState> _phoneFormKey = GlobalKey<FormState>();
     return flag;
   }
 
+  Future<void> _register(BuildContext context)async{
+    if (!_phoneFormKey.currentState!.validate()) {
+      Navigator.pop(context);
+      return; 
+    }else{
+      Navigator.pop(context);
+      _phoneFormKey.currentState!.save();
+      BlocProvider.of<PhoneAuthCubit>(context).submitPhoneNumber(phoneNumber);
+    }
+  }
   Widget _buildNextButton(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, otpScreen);
+          showProgressIndicator(context);
+          _register(context);
         },
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(110, 50),
@@ -137,6 +151,55 @@ final GlobalKey<FormState> _phoneFormKey = GlobalKey<FormState>();
         ),
       ),
     );
+  }
+
+  void showProgressIndicator(BuildContext context) {
+    AlertDialog alertDialog = const AlertDialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0.0,
+      content: Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+        ),
+      ),
+    );
+    showDialog(
+      barrierColor: Colors.white.withOpacity(0),
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return alertDialog;
+      },
+    );
+  }
+
+  Widget _buildPhoneNumberSubmitedBloc() {
+    return BlocListener<PhoneAuthCubit, PhoneAuthState>(
+        listenWhen: (previous, current) => previous != current,
+        listener: (context, state) {
+          if (state is Loading) {
+            showProgressIndicator(context);
+          }
+          if (state is PhoneNumberSubmited) {
+            Navigator.pop(context);
+            Navigator.of(context).pushNamed(otpScreen, arguments: phoneNumber);
+          }
+          if (state is ErrorOccurred) {
+            Navigator.pop(context);
+            String errorMsg = (state).errorMsg;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  errorMsg.toString(),
+                ),
+                backgroundColor: Colors.black,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        },
+        child: Container(),
+        );
   }
 
   @override
@@ -158,8 +221,11 @@ final GlobalKey<FormState> _phoneFormKey = GlobalKey<FormState>();
                     height: 110.0,
                   ),
                   _buildPhoneFormField(),
-                  const SizedBox(height: 70.0,),
+                  const SizedBox(
+                    height: 70.0,
+                  ),
                   _buildNextButton(context),
+                  _buildPhoneNumberSubmitedBloc(),
                 ],
               ),
             ),
